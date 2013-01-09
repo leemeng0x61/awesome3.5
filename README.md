@@ -26,4 +26,4 @@ GPL License: [GPL](http://www.gnu.org/licenses/gpl.html|GPL)
 
 ScreenShot
 ======
-![screenshot](https://raw.github.com/leaveboy/awesome3.5/master/fullsc.png screenshot)
+![screen shot](https://raw.github.com/leaveboy/awesome3.5/master/fullsc.png "screenshot")
