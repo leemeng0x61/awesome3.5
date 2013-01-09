@@ -82,9 +82,9 @@ naughty.config.defaults.ontop = true
 naughty.config.defaults.font = "文泉驿等宽微米黑 12"
 naughty.config.defaults.icon = nil
 naughty.config.defaults.icon_size = 256
-naughty.config.defaults.fg = fg_widget
-naughty.config.defaults.bg = bg_widget
-naughty.config.defaults.border_color = bg_em
+naughty.config.defaults.fg = fg_tooltip
+naughty.config.defaults.bg = bg_tooltip
+naughty.config.defaults.border_color = border_tooltip
 naughty.config.defaults.border_width = 2
 naughty.config.defaults.hover_timeout = nil
 -- }}}

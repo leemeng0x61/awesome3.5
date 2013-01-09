@@ -24,7 +24,7 @@ cpu_high    = "#ff0000"
 
 fg_widget     = "#908884"
 bg_widget     = "#2a2a2a"
-bg_em         = "#ffcc00"
+bg_em         = "orange"
 bg_tooltip    = "#d6d6d6"
 fg_tooltip    = "#1a1a1a"
 border_tooltip= "#444444"
@@ -49,7 +49,7 @@ comma = wibox.widget.textbox()
 comma:set_markup(",")
 
 pipe = wibox.widget.textbox()
-pipe:set_markup(span_color(fg_widget,'┋'))
+pipe:set_markup(span_color(bg_em,'┋'))
 
 tab = wibox.widget.textbox()
 tab:set_text("         ")
