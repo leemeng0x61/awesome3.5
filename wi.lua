@@ -394,10 +394,13 @@ vicious.register(batpct, vicious.widgets.bat, function(widget, args)
       baticon:set_image(beautiful.widget_batmed)
     elseif bat_charge > 10 then
       baticon:set_image(beautiful.widget_batlow)
-    else
       baticon:set_image(beautiful.widget_batempty)
-			naughty.notify { text = span_fg_em("Charge :")..("10%\n") .. span_fg_em("State  :")..("Discharging (0.5 hour)"),
+			naughty.notify { text = span_fg_em("Charge :")..("Less 10%\n") .. span_fg_em("State  :")..("Hibernate at 3%"),
 			timeout = 2, hover_timeout = 0.5 }
+    elseif bat_charge > 3 then
+			awful.util.spawn_with_shell("pm-hibernate")
+		else
+
     end
   else
     baticon:set_image(beautiful.widget_ac)

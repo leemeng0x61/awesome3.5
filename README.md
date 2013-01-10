@@ -16,9 +16,10 @@ Note
 
 Install
 ======
-- copy the project files into your awesome config dir,mostly it is `~/config/awesome/`
+- copy the project files into your ~awesome~ config dir,mostly it is `~/config/awesome/`
 - update the `xdgmenu` bye the command:
-> $ xdg_menu --format awesome --root-menu /etc/xdg/menus/arch-applications.menu > ~/.config/awesome/menu.lua
+
+`$ xdg_menu --format awesome --root-menu /etc/xdg/menus/arch-applications.menu > ~/.config/awesome/menu.lua`
 
 Linsence
 ======
