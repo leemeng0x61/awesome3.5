@@ -380,7 +380,8 @@ globalkeys = awful.util.table.join(
     end),
 
   -- Prompt
-  awful.key({ altkey }, "F2", function() mypromptbox[mouse.screen]:run() end),
+  --awful.key({ altkey }, "F2", function() mypromptbox[mouse.screen]:run() end),
+  awful.key({ modkey }, "r", function() mypromptbox[mouse.screen]:run() end),
 
   awful.key({ modkey }, "x",
     function()
@@ -391,7 +392,8 @@ globalkeys = awful.util.table.join(
     end),
 
   -- Menubar
-  awful.key({ modkey }, "r", function() menubar.show() end),
+  awful.key({ altkey }, "F2", function()  menubar.show() end),
+  --awful.key({ modkey }, "r", function() menubar.show() end),
 
   -- {{{ Tag 0
   awful.key({ modkey }, 0,
@@ -594,8 +596,10 @@ client.connect_signal("manage", function(c, startup)
     end
   end)
 
-client.connect_signal("focus",   function(c) c.border_color = beautiful.border_focus c.opacity = 1 end)
-client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal c.opacity = 0.7 end)
+--client.connect_signal("focus",   function(c) c.border_color = beautiful.border_focus c.opacity = 1 end)
+--client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal c.opacity = 0.7 end)
+client.connect_signal("focus",   function(c) c.border_color = beautiful.border_focus end)
+client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 -- {{{ auto cmd
 do
