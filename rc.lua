@@ -224,8 +224,8 @@ for s = 1, screen.count() do
   right_wibox:add(volspace)
   right_wibox:add(pipe)
   if s == 1 then right_wibox:add(wibox.widget.systray()) end
-  --right_wibox:add(mytextclock)
-  right_wibox:add(clock_widget)
+  right_wibox:add(mytextclock)
+  --right_wibox:add(clock_widget)
   right_wibox:add(mylayoutbox[s])
 
   local wibox_layout = wibox.layout.align.horizontal()

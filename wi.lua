@@ -13,6 +13,7 @@ local wibox     = require("wibox")
 local beautiful = require("beautiful")
 local vicious   = require("vicious")
 local naughty   = require("naughty")
+local cal       = require("utils.cal")
 
 height      = 12
 graphwidth  = 50
@@ -280,16 +281,20 @@ downgraph:set_color({
 vicious.register(downgraph, vicious.widgets.net, "${wlan0 down_kb}")
 
 -- {{{ CLOCK
-clock_widget = wibox.widget.textbox()
-vicious.register(clock_widget, vicious.widgets.date, "%R", 1)
-
--- Buttons
-clock_widget:buttons(awful.util.table.join(awful.button({ }, 1, 
-function()
-	local f = io.popen("cal -m")
-	p = f:read("*a")
-	naughty.notify { text = span_fg_em(p), timeout = 5, hover_timeout = 0.5 }
-end)))
+mytextclock = awful.widget.textclock("%R")
+cal.register(mytextclock,span_bg_em("%s"))
+--[[
+   [clock_widget = wibox.widget.textbox()
+   [vicious.register(clock_widget, vicious.widgets.date, "%R", 1)
+   [
+   [-- Buttons
+   [clock_widget:buttons(awful.util.table.join(awful.button({ }, 1, 
+   [function()
+   [    local f = io.popen("cal -m")
+   [    p = f:read("*a")
+   [    naughty.notify { text = span_fg_em(p), timeout = 5, hover_timeout = 0.5 }
+   [end)))
+   ]]
 -- }}}
 
 -- {{{ WEATHER
