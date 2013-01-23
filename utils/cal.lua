@@ -9,6 +9,12 @@
 --   + rename it to cal
 --   + lua52 compliant module
 --
+-- modified by mengqicheng (Lee Meng) <leaveboy@gmail.com> (2013),under the same licence,
+-- and with the following changes:
+--   + use string.format instead of some judgement
+--   + and use color span_fg_em and to set the font's color
+--   + fix the bug header not at the first line when change the month
+--
 -- 1. require it in your rc.lua
 --	require("cal")
 -- 2. attach the calendar to a widget of your choice (ex mytextclock)
@@ -30,13 +36,14 @@ local cal = {}
 local tooltip
 local state = {}
 local current_day_format = "<u>%s</u>"
+local spacer_4 = "    "
 
 function displayMonth(month,year,weekStart)
 	local t,wkSt=os.time{year=year, month=month+1, day=0},weekStart or 1
 	local d=os.date("*t",t)
 	local mthDays,stDay=d.day,(d.wday-d.day-wkSt+1)%7
 
-	local lines = "    "
+	local lines = spacer_4
 
 	for x=0,6 do
 		lines = lines .. span_fg_em(string.format("%4.3s",os.date("%a",os.time{year=2006,month=1,day=x+wkSt})))
@@ -46,37 +53,43 @@ function displayMonth(month,year,weekStart)
 
 	local writeLine = 1
 	while writeLine < (stDay + 1) do
-		lines = lines .. "    "
+		lines = lines .. spacer_4
 		writeLine = writeLine + 1
 	end
 
-        for d=1,mthDays do
-                local x = string.format("%4d",d)
-                local t = os.time{year=year,month=month,day=d}
-                if writeLine == 8 then
-                        writeLine = 1
-                        lines = lines .. "\n" .. span_fg_em(os.date(" %V",t))
-                end
-                if os.date("%Y-%m-%d") == os.date("%Y-%m-%d", t) then
-                        x = string.format(current_day_format, x)
-                end
-                --[[ using string format 
-                   [if d < 10 then
-                   [        x = " " .. x
-                   [end
-                   ]]
-                lines = lines .. x
-                writeLine = writeLine + 1
+    for d=1,mthDays do
+        local x = string.format("%4d",d)
+        local t = os.time{year=year,month=month,day=d}
+        if writeLine == 8 then
+            writeLine = 1
+            lines = lines .. "\n" .. span_fg_em(os.date(" %V",t))
         end
-        if stDay + mthDays < 36 then
-                lines = lines .. "\n"
+        if os.date("%Y-%m-%d") == os.date("%Y-%m-%d", t) then
+            x = string.format(current_day_format, x)
         end
-        if stDay + mthDays < 29 then
-                lines = lines .. "\n"
+        if writeLine == 6 or writeLine == 7  then
+            x = span_color("#666666", x)
         end
-        local header = os.date("%B %Y\n",os.time{year=year,month=month,day=1})
+        --[[ using string format 
+        [if d < 10 then
+        [        x = " " .. x
+        [end
+        ]]
+        lines = lines .. x
+        writeLine = writeLine + 1
+    end
+    lines = lines .. "\n"
+    --[[ this will caused header jumped when month change
+    [if stDay + mthDays < 36 then
+    [        lines = lines .. "\n"
+    [end
+    [if stDay + mthDays < 29 then
+    [        lines = lines .. "\n"
+    [end
+    ]]
+    local header = os.date("%B %Y",os.time{year=year,month=month,day=1})
 
-	return header .. "\n" .. lines
+	return header .. "\n\n" .. lines
 end
 
 
@@ -125,7 +138,7 @@ end
 
 function switchMonth(delta)
 	state[1] = state[1] + (delta or 1)
-	local text = string.format('<span font_desc="monospace">%s</span>', displayMonth(state[1], state[2], 2))
+	local text = string.format('<span font_desc="文泉驿等宽微米黑">%s</span>', displayMonth(state[1], state[2], 2))
 	tooltip:set_text(text)
 end
 
