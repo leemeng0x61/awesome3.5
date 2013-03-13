@@ -245,8 +245,8 @@ vicious.cache(vicious.widgets.net)
 -- UpSpeed/TX and DownSpeed/RX 
 wifiwidget = wibox.widget.textbox()
 vicious.register(wifiwidget, vicious.widgets.net, span_fg_em("Ψ") ..
-  span_color("green","↓${wlan0 down_kb}K/${wlan0 tx_mb}") ..
-  span_color("orange","↑${wlan0 up_kb}K/${wlan0 rx_mb}"), 1)
+  span_color("green","↓${wlan0 down_kb}K") ..
+  span_color("orange","↑${wlan0 up_kb}K"), 1)
 
 -- Up graph
 upgraph = awful.widget.graph()
@@ -281,7 +281,7 @@ downgraph:set_color({
 vicious.register(downgraph, vicious.widgets.net, "${wlan0 down_kb}")
 
 -- {{{ CLOCK
-mytextclock = awful.widget.textclock("%R")
+mytextclock = awful.widget.textclock("%a %R",1)
 cal.register(mytextclock,span_bg_em("%s"))
 --[[
    [clock_widget = wibox.widget.textbox()
