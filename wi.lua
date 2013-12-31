@@ -392,7 +392,7 @@ vicious.register(batpct, vicious.widgets.bat, function(widget, args)
   bat_charge = args[2]
   bat_time   = args[3]
 
-  if args[1] == "-" then
+  if args[1] == "−" then
     if bat_charge > 70 then
       baticon:set_image(beautiful.widget_batfull)
     elseif bat_charge > 30 then
@@ -428,7 +428,7 @@ function popup_bat()
     state = "Charged"
   elseif bat_state == "+" then
     state = "Charging"
-  elseif bat_state == "-" then
+  elseif bat_state == "−" then
     state = "Discharging"
   elseif bat_state == "⌁" then
     state = "Not charging"

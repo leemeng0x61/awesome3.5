@@ -20,6 +20,7 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 local vicious = require("vicious")
 local menu = require("menu")
+local scratch = require("scratch")
 local wi      = require("wi")
 
 -- {{{ Error handling
@@ -99,7 +100,7 @@ end
 
 -- {{{ Tags
 tags = {
-  names  = { "term", "web", "vbox", "mail", "im", 6, 7, "rss", "media" },
+  names  = { "term", "web", "gvim", "mail", "im", 6, 7, "rss", "media" },
   layout = { layouts[3], layouts[1], layouts[1], layouts[5], layouts[1],
              layouts[7], layouts[7], layouts[6], layouts[7]
 }}
@@ -292,7 +293,8 @@ globalkeys = awful.util.table.join(
 	awful.key({ }, "XF86AudioNext",       function()awful.util.spawn("mpc next")end),
 	awful.key({ }, "XF86AudioPrev",       function()awful.util.spawn("mpc prev")end),
 	awful.key({ }, "XF86Display",         function()awful.util.spawn("xrandr --output VGA1 --auto --left-of LVDS1")end),
-	awful.key({ }, "XF86ScreenSaver",     function()awful.util.spawn("xscreensaver-command --lock")end),
+	--awful.key({ }, "XF86ScreenSaver",     function()awful.util.spawn("xscreensaver-command --lock")end),
+	awful.key({ }, "XF86ScreenSaver",     function()awful.util.spawn("slock")end),
 
 	-- 截图 {{{3
 	awful.key({ }, "Print", function ()
@@ -324,7 +326,8 @@ globalkeys = awful.util.table.join(
 		old_word = new_word
 
 		local fc = ""
-		local f = io.popen("sdcv -n --utf8-output -u 'stardict1.3英汉辞典' "..new_word)
+		--local f = io.popen("sdcv -n --utf8-output -u 'stardict1.3英汉辞典' "..new_word)
+		local f = io.popen("sdcv -n --utf8-output -u '朗道英汉字典5.0' "..new_word)
 		for line in f:lines() do
 			fc = fc .. line .. '\n'
 		end
@@ -447,9 +450,10 @@ clientkeys = awful.util.table.join(
     end),
 
   -- Scratchify
-  awful.key({ modkey, }, "v",
+  awful.key({ modkey }, "s", function () scratch.pad.toggle() end),
+  awful.key({ modkey }, "v",
     function(c)
-      scratch.pad.set(c, 0.50, 0.50, true)
+      scratch.pad.seT(c, 0.50, 0.50, true)
     end)
 )
 
@@ -507,34 +511,22 @@ awful.rules.rules = {
       focus = awful.client.focus.filter,
       keys = clientkeys,
       buttons = clientbuttons } },
-  { rule = { class = "MPlayer" },
-    properties = { floating = true } },
-  { rule = { class = "Skype" },
-    properties = { floating = true, tag = tags[1][10] } },
-  { rule = { class = "Godesk" },
-    properties = { floating = true } },
-  { rule = { class = "pinentry" },
-    properties = { floating = true } },
+  { rule = { class = "urxvt" },
+    properties = { tag = tags[1][1] } },
   { rule = { class = "Firefox" },
     properties = { tag = tags[1][2] } },
-  { rule = { class = "Firefox", instance = "Download" },
-    properties = { floating = true } },
-  { rule = { class = "Firefox", instance = "Browser" },
-    properties = { floating = true } },
-  { rule = { class = "Firefox", instance = "Toplevel" },
-    properties = { floating = true } },
-  { rule = { class = "Firefox", instance = "Places" },
-    properties = { floating = true } },
-  { rule = { class = "Thunderbird", instance = "Mail" },
-    properties = { floating = true, above = true } },
-  { rule = { class = "Thunderbird", instance = "Calendar" },
-    properties = { floating = true, above = true } },
-  { rule = { class = "Thunderbird", instance = "Msgcompose" },
-    properties = { floating = true, above = true } },
+  { rule = { class = "Gvim" },
+    properties = { tag = tags[1][3] } },
+  { rule = { class = "Thunderbird" },
+    properties = { tag = tags[1][4] } },
+  { rule = { class = "Empathy" },
+    properties = { tag = tags[1][5] } },
   { rule = { class = "Thunar" },
     properties = { tag = tags[1][7] } },
   { rule = { class = "Gimp-2.8" },
-    properties = { floating = true, tag = tags[1][8] } }
+    properties = { tag = tags[1][8] } },
+  { rule = { class = "SMPlayer" },
+    properties = { tag = tags[1][9] } }
 }
 -- }}}
 

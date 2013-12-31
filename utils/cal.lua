@@ -68,7 +68,7 @@ function displayMonth(month,year,weekStart)
             x = string.format(current_day_format, x)
         end
         if writeLine == 6 or writeLine == 7  then
-            x = span_color("#666666", x)
+            x = span_color("#ada394", x)
         end
         --[[ using string format 
         [if d < 10 then
