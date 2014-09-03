@@ -245,8 +245,8 @@ vicious.cache(vicious.widgets.net)
 -- UpSpeed/TX and DownSpeed/RX 
 wifiwidget = wibox.widget.textbox()
 vicious.register(wifiwidget, vicious.widgets.net, span_fg_em("Ψ") ..
-  span_color("green","↓${wlan0 down_kb}K") ..
-  span_color("orange","↑${wlan0 up_kb}K"), 1)
+  span_color("green","↓${wlp3s0 down_kb}K") ..
+  span_color("orange","↑${wlp3s0 up_kb}K"), 1)
 
 -- Up graph
 upgraph = awful.widget.graph()
@@ -262,7 +262,7 @@ upgraph:set_color({
     { 0.50, cpu_mid },
     { 1, cpu_high }
   }})
-vicious.register(upgraph, vicious.widgets.net, "${wlan0 up_kb}")
+vicious.register(upgraph, vicious.widgets.net, "${wlp3s0 up_kb}")
 
 -- Down graph
 downgraph = awful.widget.graph()
@@ -278,11 +278,11 @@ downgraph:set_color({
     { 0.50, cpu_mid },
     { 1, cpu_high }
   }})
-vicious.register(downgraph, vicious.widgets.net, "${wlan0 down_kb}")
+vicious.register(downgraph, vicious.widgets.net, "${wlp3s0 down_kb}")
 
 -- {{{ CLOCK
 mytextclock = awful.widget.textclock("%a %R",1)
-cal.register(mytextclock,span_bg_em("%s"))
+cal.register(mytextclock," [%s]")
 --[[
    [clock_widget = wibox.widget.textbox()
    [vicious.register(clock_widget, vicious.widgets.date, "%R", 1)
@@ -364,11 +364,11 @@ vicious.register(volpct, vicious.widgets.volume, "$1%", nil, "Master")
 -- Buttons
 volicon:buttons(awful.util.table.join(
   awful.button({ }, 1,
-    function() awful.util.spawn_with_shell("amixer sset Master toggle") end),
+    function() awful.util.spawn_with_shell("ponymix toggle") end),
   awful.button({ }, 4,
-    function() awful.util.spawn_with_shell("amixer sset Master,0 5%+") end),
+    function() awful.util.spawn_with_shell("ponymix increase 1") end),
   awful.button({ }, 5,
-    function() awful.util.spawn_with_shell("amixer sset Master,0 5%-") end)
+    function() awful.util.spawn_with_shell("ponymix decrease 1") end)
 ))
 volpct:buttons(volicon:buttons())
 volspace:buttons(volicon:buttons())
@@ -393,7 +393,7 @@ vicious.register(batpct, vicious.widgets.bat, function(widget, args)
   bat_time   = args[3]
 
   if args[1] == "−" then
-    if bat_charge > 70 then
+    if bat_charge > 90 then
       baticon:set_image(beautiful.widget_batfull)
     elseif bat_charge > 30 then
       baticon:set_image(beautiful.widget_batmed)

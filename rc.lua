@@ -80,7 +80,7 @@ naughty.config.defaults.margin = 8
 naughty.config.defaults.gap = 1
 naughty.config.defaults.ontop = true
 --naughty.config.defaults.font = "Monaco 12"
-naughty.config.defaults.font = "文泉驿等宽微米黑 12"
+naughty.config.defaults.font = "Fantasque Sans Mono 12"
 naughty.config.defaults.icon = nil
 naughty.config.defaults.icon_size = 256
 naughty.config.defaults.fg = fg_tooltip
@@ -286,9 +286,12 @@ globalkeys = awful.util.table.join(
 	end),
 
 	--X230 keborad ctrl
-	awful.key({ }, "XF86AudioLowerVolume",function()awful.util.spawn("amixer sset Master,0 5%-")end),
-	awful.key({ }, "XF86AudioRaiseVolume",function()awful.util.spawn("amixer sset Master,0 5%+")end),
-	awful.key({ }, "XF86AudioMute",       function()awful.util.spawn("amixer sset Master toggle")end),
+	--awful.key({ }, "XF86AudioLowerVolume",function()awful.util.spawn("amixer sset Master,0 5%-")end),
+	--awful.key({ }, "XF86AudioRaiseVolume",function()awful.util.spawn("amixer sset Master,0 5%+")end),
+	--awful.key({ }, "XF86AudioMute",       function()awful.util.spawn("amixer sset Master toggle")end),
+	awful.key({ }, "XF86AudioLowerVolume",function()awful.util.spawn("ponymix decrease 1")end),
+	awful.key({ }, "XF86AudioRaiseVolume",function()awful.util.spawn("ponymix increase 1")end),
+	awful.key({ }, "XF86AudioMute",       function()awful.util.spawn("ponymix toggle")end),
 	awful.key({ }, "XF86AudioPlay",       function()awful.util.spawn("mpc toggle")end),
 	awful.key({ }, "XF86AudioNext",       function()awful.util.spawn("mpc next")end),
 	awful.key({ }, "XF86AudioPrev",       function()awful.util.spawn("mpc prev")end),
@@ -511,6 +514,16 @@ awful.rules.rules = {
       focus = awful.client.focus.filter,
       keys = clientkeys,
       buttons = clientbuttons } },
+  { rule = { class = "Screenkey" },
+    properties    = {
+      opacity   = 0.50,
+      floating  = true,
+      ontop     = true,
+      focus     = false, },
+      callback = function( c )
+          c:geometry( { x = 0, width = 3200, y = 700, height = 120 } )
+      end },
+
   { rule = { class = "urxvt" },
     properties = { tag = tags[1][1] } },
   { rule = { class = "Firefox" },
