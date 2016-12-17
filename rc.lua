@@ -15,10 +15,9 @@ awful.rules = require("awful.rules")
 require("awful.autofocus")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
-beautiful.init(awful.util.getdir("config") .. "/themes/dust/theme.lua")
 local naughty = require("naughty")
 local menubar = require("menubar")
-local vicious = require("vicious")
+local lain= require("lain")
 local menu = require("menu")
 local scratch = require("scratch")
 local wi      = require("wi")
@@ -72,23 +71,7 @@ local layouts =
 }
 -- }}}
 
--- {{{ Naughty presets
-naughty.config.defaults.timeout = 5
-naughty.config.defaults.screen = 1
-naughty.config.defaults.position = "top_right"
-naughty.config.defaults.margin = 8
-naughty.config.defaults.gap = 1
-naughty.config.defaults.ontop = true
---naughty.config.defaults.font = "Monaco 12"
-naughty.config.defaults.font = "Fantasque Sans Mono 12"
-naughty.config.defaults.icon = nil
-naughty.config.defaults.icon_size = 256
-naughty.config.defaults.fg = fg_tooltip
-naughty.config.defaults.bg = bg_tooltip
-naughty.config.defaults.border_color = border_tooltip
-naughty.config.defaults.border_width = 2
-naughty.config.defaults.hover_timeout = nil
--- }}}
+beautiful.init(awful.util.getdir("config") .. "/themes/dust/theme.lua")
 
 -- {{{ Wallpaper
 if beautiful.wallpaper then
@@ -100,7 +83,7 @@ end
 
 -- {{{ Tags
 tags = {
-  names  = { "term", "web", "gvim", "mail", "im", 6, 7, "rss", "media" },
+  names  = { "term", "web", "develop", "mail", "im", 6, 7, "rss", "media" },
   layout = { layouts[3], layouts[1], layouts[1], layouts[5], layouts[1],
              layouts[7], layouts[7], layouts[6], layouts[7]
 }}
@@ -122,12 +105,8 @@ myawesomemenu = {
    { "quit", awesome.quit }
 }
 
-mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
-                                    { "application", xdgmenu},
-                                    { "open terminal", terminal }
-                                  }
-                        })
-
+mymainmenu = awful.menu.new({ items = require("freedesktop").menu.build(),
+                              theme = { height = 16, width = 130 }})
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
                                      menu = mymainmenu })
 
@@ -138,6 +117,11 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 ---- {{{ Clock
 --mytextclock = awful.widget.textclock("%a %b %d %R")
 ---- }}}
+-- Textclock
+mytextclock = awful.widget.textclock("<span font='Tamsyn 2'> </span>%H:%M ")
+
+-- Calendar
+lain.widgets.calendar.attach(mytextclock)
 
 -- {{{ Wiboxes
 mywibox = {}
@@ -205,7 +189,7 @@ for s = 1, screen.count() do
   mywibox[s] = awful.wibox({ position = "top", height = 16, screen = s })
 
   local left_wibox = wibox.layout.fixed.horizontal()
-	left_wibox:add(mylauncher)
+  left_wibox:add(mylauncher)
   left_wibox:add(mytaglist[s])
   left_wibox:add(mypromptbox[s])
 
@@ -268,6 +252,12 @@ for s = 1, screen.count() do
 end
 -- }}}
 
+-- {{{ Mouse Bindings
+root.buttons(awful.util.table.join(
+    awful.button({ }, 3, function () mymainmenu:toggle() end),
+    awful.button({ }, 4, awful.tag.viewnext),
+    awful.button({ }, 5, awful.tag.viewprev)
+))
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
   awful.key({ modkey, }, "Left", awful.tag.viewprev ),
@@ -286,18 +276,17 @@ globalkeys = awful.util.table.join(
 	end),
 
 	--X230 keborad ctrl
-	--awful.key({ }, "XF86AudioLowerVolume",function()awful.util.spawn("amixer sset Master,0 5%-")end),
-	--awful.key({ }, "XF86AudioRaiseVolume",function()awful.util.spawn("amixer sset Master,0 5%+")end),
-	--awful.key({ }, "XF86AudioMute",       function()awful.util.spawn("amixer sset Master toggle")end),
-	awful.key({ }, "XF86AudioLowerVolume",function()awful.util.spawn("ponymix decrease 1")end),
-	awful.key({ }, "XF86AudioRaiseVolume",function()awful.util.spawn("ponymix increase 1")end),
-	awful.key({ }, "XF86AudioMute",       function()awful.util.spawn("ponymix toggle")end),
+    awful.key({ }, "XF86AudioLowerVolume",function()awful.util.spawn("amixer sset Master,0 5%-")end),
+    awful.key({ }, "XF86AudioRaiseVolume",function()awful.util.spawn("amixer sset Master,0 5%+")end),
+    awful.key({ }, "XF86AudioMute",       function()awful.util.spawn("amixer sset Master toggle")end),
 	awful.key({ }, "XF86AudioPlay",       function()awful.util.spawn("mpc toggle")end),
 	awful.key({ }, "XF86AudioNext",       function()awful.util.spawn("mpc next")end),
 	awful.key({ }, "XF86AudioPrev",       function()awful.util.spawn("mpc prev")end),
 	awful.key({ }, "XF86Display",         function()awful.util.spawn("xrandr --output VGA1 --auto --left-of LVDS1")end),
 	--awful.key({ }, "XF86ScreenSaver",     function()awful.util.spawn("xscreensaver-command --lock")end),
-	awful.key({ }, "XF86ScreenSaver",     function()awful.util.spawn("slock")end),
+	awful.key({ }, "XF86ScreenSaver",     function()awful.util.spawn("slimlock")end),
+	awful.key({ }, "XF86Sleep",     function()awful.util.spawn("slock")end),
+	awful.key({ modkey, }, "l",     function()awful.util.spawn("slock")end),
 
 	-- 截图 {{{3
 	awful.key({ }, "Print", function ()
@@ -330,12 +319,18 @@ globalkeys = awful.util.table.join(
 
 		local fc = ""
 		--local f = io.popen("sdcv -n --utf8-output -u 'stardict1.3英汉辞典' "..new_word)
-		local f = io.popen("sdcv -n --utf8-output -u '朗道英汉字典5.0' "..new_word)
+        local f = io.popen("sdcv -n --utf8-output -u '朗道英汉字典5.0' "..new_word)
+        --local f = io.popen("ydcv  "..new_word)
 		for line in f:lines() do
 			fc = fc .. line .. '\n'
 		end
 		f:close()
 		frame = naughty.notify({ text = span_fg_em(fc), timeout = 5})
+	end),
+    -- Show/Hide Wibox
+    awful.key({ modkey }, "b", function ()
+        mywibox[mouse.screen].visible = not mywibox[mouse.screen].visible
+        mygraphbox[mouse.screen].visible = not mygraphbox[mouse.screen].visible
 	end),
 	awful.key({ modkey,           }, "Tab",function ()
 		awful.client.focus.history.previous()
@@ -532,7 +527,7 @@ awful.rules.rules = {
     properties = { tag = tags[1][3] } },
   { rule = { class = "Thunderbird" },
     properties = { tag = tags[1][4] } },
-  { rule = { class = "Empathy" },
+  { rule = { class = "electronic-wechat" },
     properties = { tag = tags[1][5] } },
   { rule = { class = "Thunar" },
     properties = { tag = tags[1][7] } },

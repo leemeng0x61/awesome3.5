@@ -46,10 +46,10 @@ function displayMonth(month,year,weekStart)
 	local lines = spacer_4
 
 	for x=0,6 do
-		lines = lines .. span_fg_em(string.format("%4.3s",os.date("%a",os.time{year=2006,month=1,day=x+wkSt})))
+		lines = lines .. string.format("%4.3s",os.date("%a",os.time{year=2006,month=1,day=x+wkSt}))
 	end
 
-	lines = lines .. "\n" .. span_fg_em(os.date(" %V",os.time{year=year,month=month,day=1}))
+	lines = lines .. "\n" .. os.date(" %V",os.time{year=year,month=month,day=1})
 
 	local writeLine = 1
 	while writeLine < (stDay + 1) do
@@ -62,19 +62,11 @@ function displayMonth(month,year,weekStart)
         local t = os.time{year=year,month=month,day=d}
         if writeLine == 8 then
             writeLine = 1
-            lines = lines .. "\n" .. span_fg_em(os.date(" %V",t))
+            lines = lines .. "\n" .. os.date(" %V",t)
         end
         if os.date("%Y-%m-%d") == os.date("%Y-%m-%d", t) then
-            x = string.format(current_day_format, x)
+            x = string.format(current_day_format, d)
         end
-        if writeLine == 6 or writeLine == 7  then
-            x = span_color("#ada394", x)
-        end
-        --[[ using string format 
-        [if d < 10 then
-        [        x = " " .. x
-        [end
-        ]]
         lines = lines .. x
         writeLine = writeLine + 1
     end
@@ -101,7 +93,7 @@ function cal.register(mywidget, custom_current_day_format)
                 function tooltip:update()
                         local month, year = os.date('%m'), os.date('%Y')
                         state = {month, year}
-                        tooltip:set_text(string.format('<span font_desc="文泉驿等宽微米黑">%s</span>', displayMonth(month, year, 2)))
+                        tooltip:set_text(displayMonth(month, year, 2))
                 end
                 tooltip:update()
 	end
@@ -138,7 +130,7 @@ end
 
 function switchMonth(delta)
 	state[1] = state[1] + (delta or 1)
-	local text = string.format('<span font_desc="文泉驿等宽微米黑">%s</span>', displayMonth(state[1], state[2], 2))
+	local text = displayMonth(state[1], state[2], 2)
 	tooltip:set_text(text)
 end
 

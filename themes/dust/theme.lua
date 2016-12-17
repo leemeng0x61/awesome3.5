@@ -14,7 +14,8 @@ local awful = require("awful")
 -- {{{ Main
 theme = {}
 theme.wallpaper = awful.util.getdir("config") .. "/themes/dust/background.png"
-theme.font      = "Profont 8"
+--theme.font      = "DejaVu Sans Mono 10"
+theme.font      = "Terminess Powerline 10"
 -- }}}
 
 -- {{{ Colors
