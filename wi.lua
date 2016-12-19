@@ -13,7 +13,7 @@ local wibox     = require("wibox")
 local beautiful = require("beautiful")
 local vicious   = require("vicious")
 local naughty   = require("naughty")
-local cal       = require("utils.cal")
+--local cal       = require("utils.cal")
 local lain      = require("lain")
 markup      = lain.util.markup
 
@@ -285,7 +285,7 @@ vicious.register(downgraph, vicious.widgets.net, "${wlp3s0 down_kb}")
 
 -- {{{ CLOCK
 mytextclock = awful.widget.textclock("%a %R",1)
-cal.register(mytextclock," [%s]")
+--cal.register(mytextclock," [%s]")
 --[[
    [clock_widget = wibox.widget.textbox()
    [vicious.register(clock_widget, vicious.widgets.date, "%R", 1)
@@ -557,7 +557,7 @@ memwidget = lain.widgets.mem({
 
 -- MPD
 mpdicon = wibox.widget.imagebox()
-mpdwidget = lain.widgets.mpd({
+mpdwidget1 = lain.widgets.mpd({
     settings = function()
         mpd_notification_preset = {
             text = string.format("%s [%s] - %s\n%s", mpd_now.artist,

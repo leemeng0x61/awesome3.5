@@ -20,6 +20,7 @@ local menubar = require("menubar")
 local lain= require("lain")
 local menu = require("menu")
 local scratch = require("scratch")
+beautiful.init(awful.util.getdir("config") .. "/themes/dust/theme.lua")
 local wi      = require("wi")
 
 -- {{{ Error handling
@@ -71,7 +72,6 @@ local layouts =
 }
 -- }}}
 
-beautiful.init(awful.util.getdir("config") .. "/themes/dust/theme.lua")
 
 -- {{{ Wallpaper
 if beautiful.wallpaper then
@@ -234,7 +234,7 @@ for s = 1, screen.count() do
   --left_graphbox:add(upgraph)
   left_graphbox:add(pipe)
 	--left_graphbox:add(mpdicon)
-	left_graphbox:add(mpdwidget)
+    left_graphbox:add(mpdwidget)
   --left_graphbox:add(downgraph)
 
   local right_graphbox = wibox.layout.fixed.horizontal()
