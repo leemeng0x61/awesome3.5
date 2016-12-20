@@ -33,18 +33,6 @@ bg_tooltip    = "#d6d6d6"
 fg_tooltip    = "#1a1a1a"
 border_tooltip= "#444444"
 
--- {{{ SPAN_FUN
-function span_color(color,string)
-	return "<span color='"..color.."'>"..string.."</span>"
-end
-function span_fg_em(string)
-	return span_color(fg_em,string)
-end
-function span_bg_em(string)
-	return span_color(bg_em,string)
-end
--- }}}
-
 -- {{{ SPACERS
 space = wibox.widget.textbox()
 space:set_text(" ")
@@ -53,7 +41,7 @@ comma = wibox.widget.textbox()
 comma:set_markup(",")
 
 pipe = wibox.widget.textbox()
-pipe:set_markup(span_color(fg_widget,'┋'))
+pipe:set_markup(markup(fg_widget,'┋'))
 
 tab = wibox.widget.textbox()
 tab:set_text("         ")
@@ -154,7 +142,7 @@ vicious.cache(vicious.widgets.mem)
 -- Ram used
 memused = wibox.widget.textbox()
 vicious.register(memused, vicious.widgets.mem,
-  span_fg_em("▒") .. span_bg_em("$2MB $1%") .. span_fg_em("♻") .. span_bg_em("$5% $6M"), 5)
+  markup(fg_em,"▒") .. markup(bg_em,"$2MB $1%") .. markup(fg_em,"♻") .. markup(bg_em,"$5% $6M"), 5)
 
 -- Ram bar
 membar = awful.widget.progressbar()
@@ -179,7 +167,7 @@ vicious.cache(vicious.widgets.fs)
 
 -- Root used
 rootfsused = wibox.widget.textbox()
-vicious.register(rootfsused, vicious.widgets.fs,span_fg_em("FS:") .. span_bg_em("${/ used_gb}GB ${/ used_p}%"), 97)
+vicious.register(rootfsused, vicious.widgets.fs,markup(fg_em,"FS:") .. markup(bg_em,"${/ used_gb}GB ${/ used_p}%"), 97)
 -- }}}
 
 -- {{{ DISK DIO
@@ -188,8 +176,8 @@ vicious.cache(vicious.widgets.dio)
 
 -- Read and Write
 diowidget = wibox.widget.textbox()
-vicious.register(diowidget, vicious.widgets.dio, span_fg_em("◘") ..
-  span_color("green","↓${sda write_kb}K") .. span_color("orange","↑${sda read_kb}K"),1)
+vicious.register(diowidget, vicious.widgets.dio, markup(fg_em,"◘") ..
+  markup("green","↓${sda write_kb}K") .. markup("orange","↑${sda read_kb}K"),1)
 -- }}}
 
 -- {{{ UPTIME
@@ -205,7 +193,7 @@ uptimewidget:buttons(awful.util.table.join(awful.button({ }, 1,
 function()
 	local f = io.popen("uptime")
 	p = f:read("*a")
-	naughty.notify { text = span_fg_em(p), timeout = 5, hover_timeout = 0.5 }
+	naughty.notify { text = markup(fg_em,p), timeout = 5, hover_timeout = 0.5 }
 end)))
 -- }}}
 
@@ -218,16 +206,16 @@ mpdicon:set_image(beautiful.widget_mpd)
 mpdwidget = wibox.widget.textbox()
 vicious.register(mpdwidget, vicious.widgets.mpd,
 function(widget, args)
-	local ret_str = span_fg_em("♫")
+	local ret_str = markup(fg_em,"♫")
 	if args["{state}"] == "Stop" then
 		mpdicon:set_image(beautiful.widget_mpd)
-		return ret_str .. span_bg_em("■")
+		return ret_str .. markup(bg_em,"■")
 	elseif args["{state}"] == "Pause" then
 		mpdicon:set_image(beautiful.widget_pause)
-		return ret_str .. span_bg_em("〓") .. args["{Artist}"]..'∙'.. args["{Title}"]
+		return ret_str .. markup(bg_em,"〓") .. args["{Artist}"]..'∙'.. args["{Title}"]
 	else
 		mpdicon:set_image(beautiful.widget_play)
-		return ret_str .. span_bg_em("▶") .. args["{Artist}"]..'∙'.. args["{Title}"]
+		return ret_str .. markup(bg_em,"▶") .. args["{Artist}"]..'∙'.. args["{Title}"]
 	end
 end, 3)
 
@@ -236,7 +224,7 @@ mpdwidget:buttons(awful.util.table.join(awful.button({ }, 1,
 function()
 	local f = io.popen("mpc")
 	p = f:read("*a")
-	naughty.notify { text = span_fg_em(p), timeout = 5, hover_timeout = 0.5 }
+	naughty.notify { text = markup(fg_em,p), timeout = 5, hover_timeout = 0.5 }
 end)))
 mpdicon:buttons(mpdwidget:buttons())
 -- }}}
@@ -247,9 +235,9 @@ vicious.cache(vicious.widgets.net)
 
 -- UpSpeed/TX and DownSpeed/RX 
 wifiwidget = wibox.widget.textbox()
-vicious.register(wifiwidget, vicious.widgets.net, span_fg_em("Ψ") ..
-  span_color("green","↓${wlp3s0 down_kb}K") ..
-  span_color("orange","↑${wlp3s0 up_kb}K"), 1)
+vicious.register(wifiwidget, vicious.widgets.net, markup(fg_em,"Ψ") ..
+  markup("green","↓${wlp3s0 down_kb}K") ..
+  markup("orange","↑${wlp3s0 up_kb}K"), 1)
 
 -- Up graph
 upgraph = awful.widget.graph()
@@ -295,7 +283,7 @@ mytextclock = awful.widget.textclock("%a %R",1)
    [function()
    [    local f = io.popen("cal -m")
    [    p = f:read("*a")
-   [    naughty.notify { text = span_fg_em(p), timeout = 5, hover_timeout = 0.5 }
+   [    naughty.notify { text = markup(fg_em,p), timeout = 5, hover_timeout = 0.5 }
    [end)))
    ]]
 -- }}}
@@ -306,12 +294,12 @@ vicious.register(weather, vicious.widgets.weather,"${sky} ${tempc}°C",1800, "ZU
 weather:buttons(awful.util.table.join(awful.button({ }, 1, function()
 	vicious.force({ weather, })
 	--naughty.notify { text = 
-	--span_fg_em("City :") ..span_bg_em(" ${city}\n")..
-	--span_fg_em("Sky  :") ..span_bg_em(" ${sky}\n")..
-	--span_fg_em("Temp :") ..span_bg_em(" ${tempc}\n")..
-	--span_fg_em("Wind :") ..span_bg_em(" ${wind}\n")..
-	--span_fg_em("Humid :") ..span_bg_em(" ${humid}\n")..
-	--span_fg_em("Press:") ..span_bg_em(" ${press}")
+	--markup(fg_em,"City :") ..markup(bg_em," ${city}\n")..
+	--markup(fg_em,"Sky  :") ..markup(bg_em," ${sky}\n")..
+	--markup(fg_em,"Temp :") ..markup(bg_em," ${tempc}\n")..
+	--markup(fg_em,"Wind :") ..markup(bg_em," ${wind}\n")..
+	--markup(fg_em,"Humid :") ..markup(bg_em," ${humid}\n")..
+	--markup(fg_em,"Press:") ..markup(bg_em," ${press}")
 	--, timeout = 5, hover_timeout = 0.5 }
 end)))
 -- }}}
@@ -346,7 +334,7 @@ function popup_pac()
     pac_updates = "System is up to date"
   end
 
-	naughty.notify { text = span_fg_em(pac_updates), timeout = 5, hover_timeout = 0.5 }
+	naughty.notify { text = markup(fg_em,pac_updates), timeout = 5, hover_timeout = 0.5 }
 end
 pacwidget:buttons(awful.util.table.join(awful.button({ }, 1, popup_pac)))
 pacicon:buttons(pacwidget:buttons())
@@ -404,7 +392,7 @@ vicious.register(batpct, vicious.widgets.bat, function(widget, args)
       baticon:set_image(beautiful.widget_batlow)
     elseif bat_charge > 3 then
       baticon:set_image(beautiful.widget_batempty)
-			naughty.notify { text = span_fg_em("Charge :")..("Less 10%\n") .. span_fg_em("State  :")..("Hibernate at 3%"),
+			naughty.notify { text = markup(fg_em,"Charge :")..("Less 10%\n") .. markup(fg_em,"State  :")..("Hibernate at 3%"),
 			timeout = 2, hover_timeout = 0.5 }
 		else
 			awful.util.spawn_with_shell("pm-hibernate")
@@ -424,6 +412,7 @@ end, nil, "BAT0")
 
 -- Buttons
 function popup_bat()
+    myweather.update()
   local state = ""
   if bat_state == "↯" then
     state = "Full"
@@ -439,23 +428,18 @@ function popup_bat()
     state = "Unknown"
   end
 
-  naughty.notify { text = span_fg_em("Charge : ") .. bat_charge .. "%\n" .. span_fg_em("State  : ") .. state ..
-    " (" .. bat_time .. ")", timeout = 5, hover_timeout = 0.5 }
+  naughty.notify { text = markup(fg_em,"Charge : ") .. bat_charge .. "%\n" .. markup(fg_em,"State  : ") .. state ..
+    " (" .. bat_time .. ")", timeout = 5, hover_timeout = 10 }
 end
 batpct:buttons(awful.util.table.join(awful.button({ }, 1, popup_bat)))
 baticon:buttons(batpct:buttons())
 -- }}}
 ---------------------------------------------------------------------------------------------------------
---  new add 2016.12.17
+--[[ new add 2016.12.17
 -- Weather
 weathericon = wibox.widget.imagebox(beautiful.widget_weather)
 myweather = lain.widgets.weather({
-    city_id = 123456, -- placeholder
-    settings = function()
-        descr = weather_now["weather"][1]["description"]:lower()
-        units = math.floor(weather_now["main"]["temp"])
-        widget:set_markup(markup("#eca4c4", descr .. " @ " .. units .. "°C "))
-    end
+    city_id = 1815286, -- placeholder
 })
 
 -- / fs
@@ -466,8 +450,7 @@ fswidget = lain.widgets.fs({
     end
 })
 
---[[ Mail IMAP check
--- commented because it needs to be set before use
+-- Mail IMAP check
 mailicon = wibox.widget.imagebox()
 mailicon:buttons(awful.util.table.join(awful.button({ }, 1, function () awful.util.spawn(mail) end)))
 mailwidget = lain.widgets.imap({
@@ -485,7 +468,6 @@ mailwidget = lain.widgets.imap({
         end
     end
 })
-]]
 
 -- CPU
 cpuicon = wibox.widget.imagebox()
@@ -505,7 +487,7 @@ tempwidget = lain.widgets.temp({
 })
 
 -- Battery
-baticon = wibox.widget.imagebox(beautiful.widget_batt)
+baticon1 = wibox.widget.imagebox(beautiful.widget_batt)
 batwidget = lain.widgets.bat({
     settings = function()
         perc = bat_now.perc .. "% "
@@ -555,7 +537,7 @@ memwidget = lain.widgets.mem({
     end
 })
 
--- MPD
+--MPD
 mpdicon = wibox.widget.imagebox()
 mpdwidget1 = lain.widgets.mpd({
     settings = function()
@@ -578,4 +560,4 @@ mpdwidget1 = lain.widgets.mpd({
         widget:set_markup(markup("#e54c62", artist) .. markup("#b2b2b2", title))
     end
 })
-
+]]

@@ -18,7 +18,6 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 local lain= require("lain")
---local menu = require("menu")
 local scratch = require("scratch")
 beautiful.init(awful.util.getdir("config") .. "/themes/dust/theme.lua")
 local wi      = require("wi")
@@ -98,13 +97,6 @@ end
 
 -- {{{ Menu
 -- Create a laucher widget and a main menu
-myawesomemenu = {
-   { "manual", terminal .. " -e man awesome" },
-	 { "edit config", editor_cmd .. " " .. awesome.conffile },
-   { "restart", awesome.restart },
-   { "quit", awesome.quit }
-}
-
 mymainmenu = awful.menu.new({ items = require("freedesktop").menu.build(),
                               theme = { height = 16, width = 130 }})
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
@@ -118,7 +110,7 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 --mytextclock = awful.widget.textclock("%a %b %d %R")
 ---- }}}
 -- Textclock
-mytextclock = awful.widget.textclock("<span font='Tamsyn 2'> </span>%H:%M ")
+mytextclock = awful.widget.textclock("<span font='Tamsyn 2'></span>%H:%M")
 
 -- Calendar
 lain.widgets.calendar.attach(mytextclock)
@@ -325,7 +317,7 @@ globalkeys = awful.util.table.join(
 			fc = fc .. line .. '\n'
 		end
 		f:close()
-		frame = naughty.notify({ text = span_fg_em(fc), timeout = 5})
+		frame = naughty.notify({ text = markup(fg_em,fc), timeout = 5})
 	end),
     -- Show/Hide Wibox
     awful.key({ modkey }, "b", function ()
@@ -425,7 +417,6 @@ globalkeys = awful.util.table.join(
         awful.client.toggletag(tags[client.focus.screen][10])
       end
     end)
-  -- }}}
 )
 
 clientkeys = awful.util.table.join(
@@ -448,11 +439,7 @@ clientkeys = awful.util.table.join(
     end),
 
   -- Scratchify
-  awful.key({ modkey }, "s", function () scratch.pad.toggle() end),
-  awful.key({ modkey }, "v",
-    function(c)
-      scratch.pad.seT(c, 0.50, 0.50, true)
-    end)
+  awful.key({ modkey }, "s", function () scratch.pad.toggle() end)
 )
 
 keynumber = 0
