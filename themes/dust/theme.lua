@@ -17,35 +17,58 @@ theme.wallpaper = awful.util.getdir("config") .. "/themes/dust/background.png"
 --theme.font      = "DejaVu Sans Mono 10"
 theme.font      = "Terminess Powerline 10"
 -- }}}
+theme.colors = {}
+theme.colors.base3   = "#002b36ff"
+theme.colors.base2   = "#073642ff"
+theme.colors.base1   = "#586e75ff"
+theme.colors.base0   = "#657b83ff"
+theme.colors.base00  = "#839496ff"
+theme.colors.base01  = "#93a1a1ff"
+theme.colors.base02  = "#eee8d5ff"
+theme.colors.base03  = "#fdf6e3ff"
+theme.colors.yellow  = "#b58900ff"
+theme.colors.orange  = "#cb4b16ff"
+theme.colors.red     = "#dc322fff"
+theme.colors.magenta = "#d33682ff"
+theme.colors.violet  = "#6c71c4ff"
+theme.colors.blue    = "#268bd2ff"
+theme.colors.cyan    = "#2aa198ff"
+theme.colors.green   = "#859900ff"
+-- }}}
+
+-- {{{ Styles
 
 -- {{{ Colors
-theme.fg_normal     = "#aaaaaa"
-theme.fg_focus      = "#ffffff"
-theme.fg_urgent     = "#ffffff"
-theme.fg_minimize   = "#ffffff"
-theme.fg_tooltip    = "#1a1a1a"
-theme.fg_em         = "brown"
+theme.fg_normal  = theme.colors.base02
+theme.fg_focus   = theme.colors.base03
+theme.fg_urgent  = theme.colors.base3
 
-theme.bg_normal     = "#222222"
-theme.bg_focus      = "#535d6c"
-theme.bg_urgent     = "#ff0000"
-theme.bg_minimize   = "#444444"
-theme.bg_systray    = theme.bg_normal
+theme.bg_normal  = theme.colors.base3
+theme.bg_focus   = theme.colors.base1
+theme.bg_urgent  = theme.colors.red
+theme.bg_systray = theme.bg_normal
+-- }}}
 
-theme.fg_normal     = "#aaaaaa"
-theme.fg_focus      = "#ffffff"
-theme.fg_urgent     = "#ffffff"
-theme.fg_minimize   = "#ffffff"
-
+-- {{{ Borders
 theme.border_width  = "1"
-theme.border_normal = "#000000"
-theme.border_focus  = "#535d6c"
-theme.border_marked = "#91231c"
+theme.border_normal = theme.bg_normal
+theme.border_focus  = theme.bg_focus
+theme.border_marked = theme.bg_urgent
+-- }}}
+
+-- {{{ Titlebars
+theme.titlebar_bg_focus  = theme.bg_focus
+theme.titlebar_bg_normal = theme.bg_normal
+-- }}}
+
+-- {{{ Mouse finder
+theme.mouse_finder_color = theme.colors.green
+-- mouse_finder_[timeout|animate_timeout|radius|factor]
+-- }}}
 
 -- {{{ Menu
 theme.menu_height = 15
 theme.menu_width = 100
--- }}}
 
 -- {{{ Taglist
 theme.taglist_squares_sel = awful.util.getdir("config") .. "/themes/dust/taglist/squaref.png"

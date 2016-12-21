@@ -21,17 +21,14 @@ height      = 12
 graphwidth  = 50
 graphheight = height
 pctwidth    = 40
-cpu_low     = "#00ff00"
-cpu_mid     = "#ffff00"
-cpu_high    = "#ff0000"
+cpu_low     = theme.colors.green
+cpu_mid     = theme.colors.magenta 
+cpu_high    = theme.colors.red
 
-fg_widget     = "#908884"
-bg_widget     = "#2a2a2a"
-bg_em         = "#ffcc00"
-fg_em         = "#E47833"
-bg_tooltip    = "#d6d6d6"
-fg_tooltip    = "#1a1a1a"
-border_tooltip= "#444444"
+fg_widget     = theme.colors.base1
+bg_widget     = theme.colors.base3
+fg_em         = theme.colors.base1
+bg_em         = theme.colors.orange
 
 -- {{{ SPACERS
 space = wibox.widget.textbox()

@@ -317,7 +317,7 @@ globalkeys = awful.util.table.join(
 			fc = fc .. line .. '\n'
 		end
 		f:close()
-		frame = naughty.notify({ text = markup(fg_em,fc), timeout = 5})
+		frame = naughty.notify({ text = markup(theme.colors.yellow,markup.font("Tamsyn 12",fc)), timeout = 10})
 	end),
     -- Show/Hide Wibox
     awful.key({ modkey }, "b", function ()
