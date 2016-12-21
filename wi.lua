@@ -412,7 +412,6 @@ end, nil, "BAT0")
 
 -- Buttons
 function popup_bat()
-    myweather.update()
   local state = ""
   if bat_state == "↯" then
     state = "Full"
