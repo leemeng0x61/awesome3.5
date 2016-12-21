@@ -290,7 +290,7 @@ mytextclock = awful.widget.textclock("%a %R",1)
 
 -- {{{ WEATHER
 weather = wibox.widget.textbox()
-vicious.register(weather, vicious.widgets.weather,"${sky} ${tempc}°C",1800, "ZUUU")
+vicious.register(weather, vicious.widgets.weather,"${weather} ${tempc}°C",1800, "ZUUU")
 weather:buttons(awful.util.table.join(awful.button({ }, 1, function()
 	vicious.force({ weather, })
 	--naughty.notify { text = 
